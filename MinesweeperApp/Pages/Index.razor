@@ -70,10 +70,9 @@
                         @if (_hasError)
                         {
                             <div id="invalidFormFeedback" class="invalid-feedback d-block">
-                                The mines must not be greater than board cells.
+                                The mines must not be greater than board cells(@(_cols * _rows - 1)). 
                             </div>
                         }
-                        @*<input required type="number" class="form-control" id="mines" placeholder="10" min="1" @bind="_mines">*@
                     </div>
                     <button type="button" class="btn btn-primary" @onclick="() => StartGame(_rows,_cols,_mines)">Start</button>
                 </div>
