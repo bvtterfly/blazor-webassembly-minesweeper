@@ -1,0 +1,13 @@
+﻿.cell {
+    text-decoration: none;
+    text-align: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 4px;
+    line-height: 1.2rem;
+    cursor: pointer;
+}
+
+.game-row {
+    display: flex;
+}

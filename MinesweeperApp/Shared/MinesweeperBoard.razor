@@ -1,0 +1,133 @@
+﻿<div>
+    <div class="d-flex justify-content-center">
+        @if (_flagMode)
+        {
+            <button type="button" class="btn btn-dark" @onclick="ToggleFlagMode">🚩</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-light" @onclick="ToggleFlagMode">🏳️</button>
+        }
+    </div>
+    <div class="d-flex justify-content-center flex-column">
+        @for (var row = 0; row < Game.Rows; row++)
+        {
+            <div class="game-row justify-content-center">
+                @for (var col = 0; col < Game.Cols; col++)
+                {
+                    var position = new Position { Row = row, Col = col };
+                    var result = Game.Get(position);
+                    @switch (result.Type)
+                    {
+                        case DisplayResultCellType.OpenedCell:
+                            <a class="cell @(GetMinesCountCssClass(result.NeighborMines ?? 0))">@GetMinesCountText(result.NeighborMines ?? 0)</a>
+                            break;
+                        case DisplayResultCellType.Cell:
+                            <a @onclick="@(() => DoAction(position))" class="cell">◻️</a>
+                            break;
+                        case DisplayResultCellType.FlaggedCell:
+                            <a @onclick="@(() => DoAction(position))" class="cell">🚩</a>
+                            break;
+                        default:
+                            {
+                                if (Game.Status.Equals(GameStatus.GameOver))
+                                {
+                                    <a class="cell">💣</a>
+                                }
+                                else
+                                {
+                                    <a @onclick="@(() => DoAction(position))" class="cell">◻️</a>
+                                }
+                                break;
+                            }
+                    }
+                }
+            </div>
+        }
+    </div>
+    <div class="d-flex justify-content-center flex-column mt-5">
+        @if (Game.Status.Equals(GameStatus.GameOver))
+        {
+            <h3 class="text-center text-danger">💥 Boom! 💥</h3>
+        }
+        @if (Game.Status.Equals(GameStatus.Won))
+            {
+            <h3 class="text-center  text-success">🎉 You Win! 🎉</h3>
+        }
+        <div class="text-center">
+            <button type="button" class="btn btn-success px-5" @onclick="RestartGame">Restart</button>
+        </div>
+
+
+    </div>
+</div>
+
+
+@code {
+
+    private string[] _minesCount =
+    {
+        "🚧",
+        "1️⃣",
+        "2️⃣",
+        "3️⃣",
+        "4️⃣",
+        "5️⃣",
+        "6️⃣",
+        "7️⃣",
+        "8️⃣"
+    };
+    
+    [Parameter]
+    public Minesweeper Game { get; set; } = new(10, 10, 29);
+
+    private bool _flagMode = false;
+
+    private string GetMinesCountCssClass(int count)
+    {
+        return count switch
+        {
+            0 => "text-body",
+            1 => "text-primary",
+            2 => "text-success",
+            _ => "text-danger"
+        };
+    }
+
+    private string GetMinesCountText(int count)
+    {
+        return _minesCount[count];
+    }
+
+
+    private void DoAction(Position position)
+    {
+
+        if (Game.Status is GameStatus.Won or GameStatus.GameOver)
+        {
+            return;
+        }
+
+        if (_flagMode)
+        {
+            Game.ToggleFlagCell(position);
+        }
+        else
+        {
+            Game.Open(position);
+        }
+    }
+
+    private void ToggleFlagMode()
+    {
+        _flagMode = !_flagMode;
+    }
+
+    private void RestartGame()
+    {
+        _flagMode = false;
+        var newGame = new Minesweeper(Game.Rows, Game.Cols, Game.MinesCount);
+        Game = newGame;
+    }
+
+}
