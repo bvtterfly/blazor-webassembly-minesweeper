@@ -97,7 +97,7 @@
 
     private void StartGame(int rows, int cols, int mines)
     {
-        if (_mines > (_rows * _cols) - 1)
+        if (mines > (rows * cols) - 1)
         {
             _hasError = true;
             return;
