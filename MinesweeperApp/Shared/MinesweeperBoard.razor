@@ -51,7 +51,7 @@
             <h3 class="text-center text-danger">💥 Boom! 💥</h3>
         }
         @if (Game.Status.Equals(GameStatus.Won))
-            {
+        {
             <h3 class="text-center  text-success">🎉 You Win! 🎉</h3>
         }
         <div class="text-center">
@@ -77,7 +77,7 @@
         "7️⃣",
         "8️⃣"
     };
-    
+
     [Parameter]
     public Minesweeper Game { get; set; } = new(10, 10, 29);
 
@@ -102,7 +102,6 @@
 
     private void DoAction(Position position)
     {
-
         if (Game.Status is GameStatus.Won or GameStatus.GameOver)
         {
             return;

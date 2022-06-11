@@ -1,22 +1,14 @@
 ﻿namespace MinesweeperApp;
 
-public enum GameStatus
-{
-    Won,
-    GameOver,
-    Created,
-    Playing
-}
-
 public class Minesweeper
 {
     public int Rows { get; }
     public int Cols { get; }
     public int MinesCount { get; }
-    
-    private readonly HashSet<Position> _openCells  = new();
-    private readonly HashSet<Position> _mines  = new();
-    private readonly HashSet<Position> _flaggedCells  = new();
+
+    private readonly HashSet<Position> _openCells = new();
+    private readonly HashSet<Position> _mines = new();
+    private readonly HashSet<Position> _flaggedCells = new();
     public GameStatus Status { get; private set; } = GameStatus.Created;
 
     public Minesweeper(int rows, int cols, int minesCount)
@@ -25,7 +17,7 @@ public class Minesweeper
         Cols = cols;
         MinesCount = minesCount;
     }
-    
+
     public Minesweeper(int rows, int cols, HashSet<Position> mines)
     {
         Rows = rows;
